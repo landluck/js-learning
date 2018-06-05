@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>throttle</title>
+  <style>
+    body {
+      overflow: scroll;
+    }
+    #main {
+      width: 800px;
+      height: 100px;
+      background: red
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 当我们的页面大于800的时候，什么都不做， 小于 800 的时候，我们的 main 区域要同步缩小 -->
+  <div id="main"> this is main </div>
+  <script>
+    function resize () {
+      const width = window.innerWidth
+      console.log(width)
+      if (width > 1000) return
+      document.getElementById('main').style.width = width + 'px'
+    }
+    function throttle(fn, delay) {
+      // let isExecute = false
+      // return function (...args) {
+      //   if (isExecute) return
+      //   isExecute = true
+      //   setTimeout(() => {
+      //     fn.apply(this, args)
+      //     isExecute = false
+      //   }, delay)
+      // }
+      let lastTime = new Date().getTime()
+      let currentTime
+      return function (...args) {
+        currentTime = new Date().getTime()
+        if (currentTime - lastTime < delay) return 
+        lastTime = currentTime
+        fn.apply(this, args)
+      }
+    }
+    window.onresize = throttle(resize, 1000)
+  </script>
+</body>
+
+</html>

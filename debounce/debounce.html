@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>debounce</title>
+  <style>
+    #text {
+      width: 300px;
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" id="text">
+  <script>
+    const text = document.getElementById('text')
+    text.oninput = debounce(search.bind(text), 2000)
+
+    function search() {
+      console.log('发起请求', this.value)
+    }
+
+    function debounce(fn, delay) {
+      let timer
+      return function (...args) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn.apply(this, args)
+        }, delay)
+      }
+    }
+  </script>
+</body>
+
+</html>
