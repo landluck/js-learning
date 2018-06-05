@@ -4,7 +4,7 @@
 
 什么是防抖，一般我们在 `input` 输入框中输出值，并且向服务端查询数据的时候，如果每次 `input` 值发生改变，都向服务器发请求的话，难免会资源浪费，并且用户体验并不好，那么我们可以在 `input` 输入值后延迟一段时间，再发请求。就是 `防抖`
 
-```
+```HTML
   <body>
     <input type="text" id="text">
     <script>
@@ -21,7 +21,7 @@
 
 测试上面代码，我们可以得到， 每次 `input` 的值发生改变，都会输出 `发起请求`， 为了调整发起请求的频率，我将代码调整这样
 
-```
+```HTML
   <body>
     <input type="text" id="text">
     <script>
@@ -63,7 +63,7 @@
 
 比如下面这个例子
 
-```
+```HTML
  <style>
     #main {
       width: 800px;
@@ -102,7 +102,7 @@
 第一种方法
 利用定时器实现
 
-```
+```HTML
   <script>
     function resize () {
       const width = window.innerWidth
@@ -128,7 +128,7 @@
 第二种方法
 利用时间差实现
 
-```
+```HTML
   <script>
     function resize () {
       const width = window.innerWidth
