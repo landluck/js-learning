@@ -23,7 +23,7 @@
   </div>
   <script>
     const dom = document.getElementById('demo')
-    delegate('click', dom,function(e) {
+    delegate('click', dom,'.child-1',function(e) {
       console.log(this, e)
     })
     const child = document.createElement('div')
@@ -32,10 +32,10 @@
     
     dom.appendChild(child)
     function delegate(type, parent, selector, handle) {
-      if (typeof type !== 'string') {
+      if (!isVerity(type) || typeof type !== 'string') {
         throw new Error('delegate first argument type must be string')
       }
-      if (!isDom(parent)) {
+      if (!isVerity(parent) || !isDom(parent)) {
         throw new Error('delegate argument parent must be HTMLElement')
       }
       let isChild = true
@@ -47,15 +47,16 @@
       parent.addEventListener(type, function (e) {
         let target = e.target
         if (isChild) {
-          let child = parent.querySelectorAll(selector)
-          for (let i = 0, len = child.length; i < len; i++) {
-            const tmp = child[i]
-            if (tmp === target) {
-              handle.call(e.target, e)
+          const childs = parent.querySelectorAll(selector)
+          const len = childs ? childs.length : 0
+          for (let i = 0; i < len; i++) {
+            if (childs[i] === target) {
+              handle && handle.call(target, e)
+              break
             }
           }
         } else {
-          handle.call(this, e)
+          handle && handle.call(this, e)
         }
       })
       
@@ -63,6 +64,11 @@
   
     function isDom(dom) {
       return typeof HTMLElement === 'object' ? dom instanceof HTMLElement : typeof dom === 'object' && dom.nodeType === 1 && typeof dom.nodeName === 'string'   
+    }
+
+
+    function isVerity(value) {
+      return value !== null && value !== undefined
     }
     
   </script>
