@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>delegate</title>
+</head>
+<body>
+  <div id="demo">
+    <div class="child-1">
+      西游记
+    </div>
+    <div class="child-2">
+      三国演义
+    </div>
+    <div class="child-3">
+      红楼梦
+    </div>
+    <div class="child-4">
+      水浒传
+    </div>
+  </div>
+  <script>
+    const dom = document.getElementById('demo')
+    delegate('click', dom,function(e) {
+      console.log(this, e)
+    })
+    const child = document.createElement('div')
+    child.textContent = '蝴蝶蝴蝶和'
+    child.setAttribute('class', 'child-1')
+    
+    dom.appendChild(child)
+    function delegate(type, parent, selector, handle) {
+      if (typeof type !== 'string') {
+        throw new Error('delegate first argument type must be string')
+      }
+      if (!isDom(parent)) {
+        throw new Error('delegate argument parent must be HTMLElement')
+      }
+      let isChild = true
+      if (!handle && typeof selector === 'function') {
+        handle = selector
+        isChild = false
+      }
+      
+      parent.addEventListener(type, function (e) {
+        let target = e.target
+        if (isChild) {
+          let child = parent.querySelectorAll(selector)
+          for (let i = 0, len = child.length; i < len; i++) {
+            const tmp = child[i]
+            if (tmp === target) {
+              handle.call(e.target, e)
+            }
+          }
+        } else {
+          handle.call(this, e)
+        }
+      })
+      
+    }
+  
+    function isDom(dom) {
+      return typeof HTMLElement === 'object' ? dom instanceof HTMLElement : typeof dom === 'object' && dom.nodeType === 1 && typeof dom.nodeName === 'string'   
+    }
+    
+  </script>
+</body>
+</html>
