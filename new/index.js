@@ -20,6 +20,10 @@ function isReference(value) {
 
 function _new(Ctor) {
   return function _new() {
+    if (typeof Ctor !== 'function' || !Ctor.prototype) {
+      throw new TypeError(`${Ctor.name} is not constructor`);
+    }
+
     // const instance = {
     //   __proto__: Ctor.prototype,
     // }
@@ -42,3 +46,9 @@ man.sayHello();
 // const old = new Person(3);
 
 // console.log(old)
+
+const A = () => {
+  console.log('a')
+}
+
+_new(A)();
