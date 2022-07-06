@@ -5,6 +5,7 @@ const data = {
   },
   c_d_f: [1, { a_f: 121 }],
   a_o: 1212,
+  f_c: new Date(),
 };
 
 function camelCase(data) {
@@ -16,7 +17,7 @@ function camelCase(data) {
 }
 
 function camelCaseKey(key) {
-  return key.replace(/_(\w)/g, (str, letter) => letter.toUpperCase());
+  return key.replace(/_(\w)/g, (_, letter) => letter.toUpperCase());
 }
 
 function camelCaseKey2(key) {
@@ -25,30 +26,35 @@ function camelCaseKey2(key) {
   return [first, ...others.map(v => v.toUpperCase())].join('');
 }
 
+function isPlainObject(value) {
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
 function isReference(value) {
-  return Array.isArray(value) || Object.prototype.toString.call(value) === "[object Object]";
+  return Array.isArray(value) || isPlainObject(value);
 }
 
 function camelCase2(data) {
   const isArray = Array.isArray(data);
-
-  if (!isReference(data)) {
-    return data;
-  }
+  const isObject = isPlainObject(data);
 
   if (isArray) {
     return data.map(value => camelCase2(value));
   }
 
-  return Object.keys(data).reduce((final, key) => {
-    final[camelCaseKey2(key)] = camelCase2(data[key])
-    return final;
-  }, {})
+  if (isObject) {
+    return Object.keys(data).reduce((final, key) => {
+      final[camelCaseKey2(key)] = camelCase2(data[key])
+      return final;
+    }, {})
+  }
+
+  return data; 
 }
 
 console.time('test')
-// console.log(camelCase2(data))
-for (let index = 0; index < 100000; index++) {
-  camelCase2(data)
-}
+console.log(camelCase2(data))
+// for (let index = 0; index < 100000; index++) {
+//   camelCase2(data)
+// }
 console.timeEnd('test')
