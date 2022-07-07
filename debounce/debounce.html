@@ -18,20 +18,50 @@
   <input type="text" id="text">
   <script>
     const text = document.getElementById('text')
-    text.oninput = debounce(search.bind(text), 2000)
+    const debounceInput = debounce(search.bind(text), 2000)
+
+    text.oninput = debounceInput;
+
+    setTimeout(() => {
+      console.log('取消请求')
+      debounceInput.cancel();
+    }, 3000)
 
     function search() {
       console.log('发起请求', this.value)
     }
 
-    function debounce(fn, delay) {
+    function debounce(func, wait, options) {
       let timer
-      return function (...args) {
-        if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
-          fn.apply(this, args)
-        }, delay)
+      let cancelFlag = false;
+
+      function _clearTimeout () {
+        clearTimeout(timer);
+        timer = null;
       }
+
+
+      function _debounce (...args) {
+        if (cancelFlag && !timer) {
+          return func.apply(this, args);
+        }
+
+        if (timer) {
+          _clearTimeout();
+        }
+
+        timer = setTimeout(() => {
+          func.apply(this, args);
+        }, wait)
+
+      }
+
+      _debounce.cancel = function cancel () {
+        cancelFlag = true;
+        _clearTimeout();
+      }
+      
+      return _debounce;
     }
   </script>
 </body>
