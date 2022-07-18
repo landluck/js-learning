@@ -32,5 +32,5 @@ function inOrderStack(root) {
   }
 }
 
-// inOrder(tree);
-// inOrderStack(tree);
+inOrder(tree);
+inOrderStack(tree);

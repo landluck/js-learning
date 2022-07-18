@@ -28,40 +28,33 @@ const tree = {
     },
 };
 
-
-function deepFirst(tree) {
-    if (!tree) {
+function preOder(root) {
+    if (!root) {
         return;
     }
-    console.log(tree.value);
+    console.log(root.value);
 
-    deepFirst(tree.left)
-    deepFirst(tree.right)
+    preOder(root.left);
+    preOder(root.right);
 }
 
-// deepFirst(tree);
+function preOderStack(root) {
+    const stack = [root];
 
-function breadthFist(tree) {
-    const queue = [tree];
-
-    while (queue.length) {
-        const value = queue.shift();
+    while(stack.length) {
+        const value = stack.pop();
 
         console.log(value.value);
 
-        if (value.left) {
-            queue.push(value.left)
-        }
-
         if (value.right) {
-            queue.push(value.right)
+            stack.push(value.right);
         }
 
+        if (value.left) {
+            stack.push(value.left);
+        }
     }
-
 }
 
-// breadthFist(tree)
-
-module.exports = tree;
-
+preOder(tree);
+preOderStack(tree);
