@@ -8,9 +8,9 @@ function bubbleSort(arr) {
       }
     }
   }
+  return arr;
 }
-4;
-// bubbleSort([5, 4, 3, 2, 1]);
+console.log(bubbleSort([4, 5, 3, 2, 1]));
 
 function selectSort(arr) {
   for (let i = 0; i < arr.length - 1; i++) {
@@ -130,4 +130,4 @@ function fastSort(data) {
   return divide(data)
 }
 
-console.log(fastSort([2, 4, 5, 3, 1]));
+// console.log(fastSort([2, 4, 5, 3, 1]));
